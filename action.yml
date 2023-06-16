@@ -1,0 +1,21 @@
+name: "chicken-code-review"
+description: "꿩 대신 닭이라는 심정으로 Chat-GPT 에게 코드 리뷰를 요청한다."
+
+inputs:
+  github-token:
+    description: GitHub WebHook Secret Token
+    required: true
+
+  gpt-key:
+    description: Chat-GPT api key
+    required: true
+
+
+
+runs:
+  using: "node16"
+  main: "src/index.js"
+
+branding: # https://feathericons.com/
+  icon: 'terminal'
+  color: 'orange'
