@@ -10,45 +10,42 @@ async function pullRequest(token, gptKey) {
 
         const client = new github.GitHub(token);
 
-
         const { GITHUB_REPOSITORY, GITHUB_SHA } = process.env;
         const [owner, repo] = GITHUB_REPOSITORY.split("/");
         const sha = GITHUB_SHA;
-        core.info(`sha ${sha}`);
-        core.info(`repo ${repo}`);
-        core.info(`owner ${owner}`);
+        core.info(`GITHUB_REPOSITORY ${GITHUB_REPOSITORY}, GITHUB_SHA ${GITHUB_SHA}`);
+        core.info(`repo ${repo}, owner ${owner}, sha ${sha}`);
+
         const compare = await client.request(`GET /repos/${owner}/${repo}/compare/${sha}^...${sha}`);
         const changes = compare.data.files.map((file) => file.filename);
         core.info(`changes ${changes}`);
 
         // 변경된 파일과 내용 가져오기
         for (const file of changes) {
-            const api = `GET /repos/${owner}/${repo}/commits/${sha}`
-            core.info(`api ${api}`);
-            const diff = await client.request(api, {
+            const diff = await client.request(`GET /repos/${owner}/${repo}/commits/${sha}`, {
                 headers: {
                     Accept: "application/vnd.github.diff",
                 },
             });
 
-            console.log(`File: ${file.filename}`);
-            console.log(`Diff:\n${diff.data}\n`);
+            core.info(`File ${file.filename}`);
+            core.info(`Diff:\n${diff.data}\n`);
         }
 
-        let review = await getReview("");
+        let review = await getReview(gptKey,"hello");
 
-        await client.repos.createCommitComment({
-            owner: owner,
-            repo: repo,
-            commit_sha: sha,
-            body: review
-        });
-
-        // 댓글 작성하기
-        // const comment = `Changes in this commit:\n${changes.join("\n")}`;
-        // await octokit.request(`POST /repos/${owner}/${repo}/commits/${sha}/comments`, {
-        //     body: comment,
+        //댓글 작성하기 case 1
+        // await client.repos.createCommitComment({
+        //     owner: owner,
+        //     repo: repo,
+        //     commit_sha: sha,
+        //     body: review
         // });
+
+        //댓글 작성하기 case 2
+        await client.request(`POST /repos/${owner}/${repo}/commits/${sha}/comments`, {
+            body: review,
+        });
 
         console.log('Comment added to the commit.');
 

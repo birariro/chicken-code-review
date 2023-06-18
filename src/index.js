@@ -19,7 +19,6 @@ async function run() {
     await pullRequest(token, gptKey)
 
 
-
   } catch (error) {
     core.setFailed(error.message);
   }

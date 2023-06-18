@@ -6,7 +6,7 @@
 ### create Personal Access Token
 
 - create Personal Access Token
-- create chat-GPT api key
+- create OpenAI api key
 - reg repository secret
 
 
@@ -24,6 +24,7 @@ jobs:
 ```
 
 
-create secret token with reg
-https://docs.github.com/en/actions/security-guides/encrypted-secrets
+[create secret token with reg]("https://docs.github.com/en/actions/security-guides/encrypted-secrets") </br>
+[create open ai key]("https://platform.openai.com/account/api-keys")
+
 

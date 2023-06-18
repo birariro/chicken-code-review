@@ -4,7 +4,7 @@
   "description": "자동머지를 위한 GitHub Actions 입니다.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,8 @@
     "@actions/core": "^1.2.6",
     "@actions/github": "^2.1.1",
     "actions-toolkit": "^2.2.0",
-    "minimist": ">=1.2.3"
+    "jest": "^29.5.0",
+    "minimist": ">=1.2.3",
+    "openai": "^3.3.0"
   }
 }
