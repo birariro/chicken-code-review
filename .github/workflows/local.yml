@@ -1,0 +1,16 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  actions:
+    runs-on: ubuntu-latest
+    name: Hello My Actions
+    steps:
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: Run My Actions
+        uses: ./
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          gpt-key : ${{ secrets.GPT_KEY }}
+          trigger : "PR"
