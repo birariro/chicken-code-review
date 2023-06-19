@@ -1,21 +1,22 @@
 {
-  "name": "automerge_actions",
+  "name": "chicken-code-review",
   "version": "1.0.0",
-  "description": "자동머지를 위한 GitHub Actions 입니다.",
+  "description": "If you do a PR, you'll get a code review",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "ncc build src/index.js -o dist --source-map --license licenses.txt"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/plm9606/automerge_actions.git"
+    "url": "git+https://github.com/birariro/chicken-code-review"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/plm9606/automerge_actions/issues"
+    "url": "https://github.com/birariro/chicken-code-review/issues"
   },
-  "homepage": "https://github.com/plm9606/automerge_actions#readme",
+  "homepage": "https://github.com/birariro/chicken-code-review#readme",
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^2.1.1",
