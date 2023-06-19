@@ -6,8 +6,6 @@ const { getReview } = require("./review");
 
 async function pullRequest(token, gptKey) {
     try {
-        core.info(`start`);
-
         const client = new github.GitHub(token);
 
         const { GITHUB_REPOSITORY, GITHUB_SHA } = process.env;
@@ -20,7 +18,9 @@ async function pullRequest(token, gptKey) {
         const changes = compare.data.files.map((file) => file.filename);
         core.info(`changes ${changes}`);
 
+
         // 변경된 파일과 내용 가져오기
+        let fileDiff = ""
         for (const file of changes) {
             const diff = await client.request(`GET /repos/${owner}/${repo}/commits/${sha}`, {
                 headers: {
@@ -28,11 +28,14 @@ async function pullRequest(token, gptKey) {
                 },
             });
 
-            core.info(`File ${file.filename}`);
+            core.info(`File ${file}`);
             core.info(`Diff:\n${diff.data}\n`);
+            fileDiff += `${diff.data}\n\n`
         }
 
-        let review = await getReview(gptKey,"hello");
+        core.info(`fileDiff:\n${fileDiff}\n`);
+
+        let review = await getReview(gptKey,fileDiff);
 
         //댓글 작성하기 case 1
         // await client.repos.createCommitComment({
