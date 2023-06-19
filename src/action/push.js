@@ -1,53 +1,10 @@
 const core = require("@actions/core");
-const github = require("@actions/github");
-const { Toolkit } = require("actions-toolkit");
-const tools = new Toolkit();
-const { getReview } = require("../review/review");
 
-async function push(token, gptKey) {
+async function push(client, owner, repo, sha, review) {
     try {
-        const client = new github.GitHub(token);
-
-        const { GITHUB_REPOSITORY, GITHUB_SHA } = process.env;
-        const [owner, repo] = GITHUB_REPOSITORY.split("/");
-        const sha = GITHUB_SHA;
-        core.info(`GITHUB_REPOSITORY ${GITHUB_REPOSITORY}, GITHUB_SHA ${GITHUB_SHA}`);
-        core.info(`repo ${repo}, owner ${owner}, sha ${sha}`);
-
-        const compare = await client.request(`GET /repos/${owner}/${repo}/compare/${sha}^...${sha}`);
-        const changes = compare.data.files.map((file) => file.filename);
-        core.info(`changes ${changes}`);
-
-
-        // 변경된 파일과 내용 가져오기
-        let fileDiff = ""
-        for (const file of changes) {
-            const diff = await client.request(`GET /repos/${owner}/${repo}/commits/${sha}`, {
-                headers: {
-                    Accept: "application/vnd.github.diff",
-                },
-            });
-
-            core.info(`File ${file}`);
-            core.info(`Diff:\n${diff.data}\n`);
-            fileDiff += `${diff.data}\n\n`
-        }
-
-        let review = await getReview(gptKey,fileDiff);
-
-        //댓글 작성하기 case 1
-        // await client.repos.createCommitComment({
-        //     owner: owner,
-        //     repo: repo,
-        //     commit_sha: sha,
-        //     body: review
-        // });
-
-        //댓글 작성하기 case 2
         await client.request(`POST /repos/${owner}/${repo}/commits/${sha}/comments`, {
             body: review,
         });
-
         console.log('Comment added to the commit.');
 
     } catch (error) {
