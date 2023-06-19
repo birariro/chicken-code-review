@@ -2,9 +2,9 @@ const core = require("@actions/core");
 const github = require("@actions/github");
 const { Toolkit } = require("actions-toolkit");
 const tools = new Toolkit();
-const { getReview } = require("./review");
+const { getReview } = require("../review/review");
 
-async function pullRequest(token, gptKey) {
+async function push(token, gptKey) {
     try {
         const client = new github.GitHub(token);
 
@@ -33,8 +33,6 @@ async function pullRequest(token, gptKey) {
             fileDiff += `${diff.data}\n\n`
         }
 
-        core.info(`fileDiff:\n${fileDiff}\n`);
-
         let review = await getReview(gptKey,fileDiff);
 
         //댓글 작성하기 case 1
@@ -58,5 +56,5 @@ async function pullRequest(token, gptKey) {
 }
 
 module.exports = {
-    pullRequest,
+    push,
 };

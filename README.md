@@ -1,17 +1,14 @@
 # chicken-reviewer
 
+If you do a PR, you'll get a code review
 
 ## Usage
+```.github/workflows/<workflow-name>.yml```  file in your GitHub repo and add the following code.
 
-### create Personal Access Token
+``` markdown          
+name: PR EVENT
+on: [pull_request]
 
-- create Personal Access Token
-- create OpenAI api key
-- reg repository secret
-
-
-
-``` markdown
 jobs:
   reviewer:
     runs-on: ubuntu-latest
@@ -19,12 +16,22 @@ jobs:
       - name: reviewer run
         uses: birariro/chicken-code-review@1.0.0
         with:
-          github-token: '<GitHub WebHook Secret Token>'
-          gpt-key: '<Chat-GPT api key>'
+          github-token: ${{ secrets.GIT_TOKEN }}
+          gpt-key: ${{secrets.GPT_KEY}}
+          trigger: "PR"
 ```
 
+### input
+- github-token(Required) : Create a personal access token in GitHub and create a GitHub secret.
+- gpt-key(Required) : Generate an OpenAI API key and create a GitHub secret.
+- trigger : default pull request event trigger but push event trigger is also possible
 
-[create secret token with reg]("https://docs.github.com/en/actions/security-guides/encrypted-secrets") </br>
-[create open ai key]("https://platform.openai.com/account/api-keys")
+[github token with secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) </br>
+[open AI key](https://platform.openai.com/account/api-keys)
+
+
+
+
+
 
 

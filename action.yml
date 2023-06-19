@@ -10,6 +10,11 @@ inputs:
     description: Chat-GPT api key
     required: true
 
+  trigger:
+    description: event trigger type (PUSH, PR)
+    required: false
+    default: "PR"
+
 
 
 runs:

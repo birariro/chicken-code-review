@@ -1,10 +1,11 @@
-const { getReview } = require("../src/review");
+const { getReview } = require("../src/review/review");
 
 const key = ""
 
-test('1 + 2 = 3', () => {
-    expect(getReview(key, "hello"))
-    console.log("")
+const code = ""
+
+test('', () => {
+    expect(getReview(key, code))
 });
 
 
