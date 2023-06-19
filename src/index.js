@@ -39,8 +39,6 @@ async function run() {
         },
       });
 
-      core.info(`File ${file}`);
-      core.info(`Diff:\n${diff.data}\n`);
       fileDiff += `${diff.data}\n\n`
     }
 
@@ -52,7 +50,6 @@ async function run() {
     else if(trigger == "PR"){
       await pullRequest(client, owner, repo, sha, review)
     }
-
 
 
   } catch (error) {

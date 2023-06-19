@@ -2,9 +2,11 @@ const { Configuration, OpenAIApi } = require("openai");
 const core = require("@actions/core");
 const { prompt } = require("./prompt")
 async function getReview(key, code){
+
     try{
 
         let _prompt = prompt() + code;
+        core.info(`_prompt: ${_prompt}`);
 
         const conf = new Configuration({
             apiKey:key
@@ -24,8 +26,6 @@ async function getReview(key, code){
         }
         core.setFailed(error.message);
     }
-
-
 }
 
 module.exports = {
