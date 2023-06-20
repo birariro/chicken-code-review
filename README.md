@@ -20,11 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: reviewer run
-        uses: birariro/chicken-code-review@1.0.0
+        uses: birariro/chicken-code-review@1.0.1
         with:
           github-token: ${{ secrets.GIT_TOKEN }}
           gpt-key: ${{secrets.GPT_KEY}}
           trigger: "PR"
+          language: "EN"
 ```
 
 If you want to include a review in your ```push```, do the following
@@ -37,17 +38,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: reviewer run
-        uses: birariro/chicken-code-review@1.0.0
+        uses: birariro/chicken-code-review@1.0.1
         with:
           github-token: ${{ secrets.GIT_TOKEN }}
           gpt-key: ${{secrets.GPT_KEY}}
           trigger: "PUSH"
+          language: "KR"
 ```
 
 ### input
 - github-token(Required) : Create a personal access token in GitHub and create a GitHub secret.
 - gpt-key(Required) : Generate an OpenAI API key and create a GitHub secret.
-- trigger : default pull request event trigger but push event trigger is also possible
+- trigger : Specify what you want to review (default = pull request)
+- language : Specify the language for the answer (default = EN)
 
 [github personal access token](https://docs.github.com/en/enterprise-server@3.5/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) </br>
 [github secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) </br>

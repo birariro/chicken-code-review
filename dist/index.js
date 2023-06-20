@@ -37976,12 +37976,12 @@ module.exports = {
 /***/ 3306:
 /***/ ((module) => {
 
-function prompt(){
+function prompt(language){
 
     let prompt = ""
     prompt += roles()
     prompt += actions()
-    prompt += answer()
+    prompt += answer(language)
     return prompt
 }
 
@@ -38003,7 +38003,7 @@ function actions(){
 
     return prompt
 }
-function answer(){
+function answer(language){
 
     let prompt = ""
     prompt += "Keep your answers short." //답변은 짧게
@@ -38011,7 +38011,10 @@ function answer(){
     prompt += "You should always adhere to technical information." //항상 기술 정보를 준수해야 합니다.
     prompt += "Use Markdown formatting in your answers." //답변에 마크다운 서식을 사용.
     prompt += "Make sure to include the programming language name at the start of the Markdown code blocks." //마크다운 코드 블록의 시작 부분에 프로그래밍 언어 이름을 포함해야 합니다.
-    prompt += "Please translate your answer into Korean" //답변은 한국어로 번역해주세요
+
+    if(language == "KR"){
+        prompt += "Please translate your answer into Korean" //답변은 한국어로 번역해주세요
+    }
 
     return prompt
 }
@@ -38031,11 +38034,11 @@ module.exports = {
 const { Configuration, OpenAIApi } = __nccwpck_require__(9211);
 const core = __nccwpck_require__(2186);
 const { prompt } = __nccwpck_require__(3306)
-async function getReview(key, code){
+async function getReview(key, code, language){
 
     try{
 
-        let _prompt = prompt() + code;
+        let _prompt = prompt(language) + code;
         core.info(`_prompt: ${_prompt}`);
 
         const conf = new Configuration({
@@ -38295,6 +38298,7 @@ async function run() {
     const token = core.getInput("github-token");
     const gptKey = core.getInput("gpt-key");
     const trigger = core.getInput("trigger");
+    const language = core.getInput("language");
 
     if((token == undefined || token == "") || (gptKey == undefined || gptKey == "")){
       core.setFailed("token undefined");
@@ -38325,7 +38329,7 @@ async function run() {
       fileDiff += `${diff.data}\n\n`
     }
 
-    let review = await getReview(gptKey,fileDiff);
+    let review = await getReview(gptKey,fileDiff,language);
 
     if(trigger == "PUSH"){
       await push(client, owner, repo, sha, review)

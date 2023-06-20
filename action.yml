@@ -15,6 +15,10 @@ inputs:
     required: false
     default: "PR"
 
+  language:
+    description: choice answer language (EN, KR)
+    required: false
+    default: "EN"
 
 runs:
   using: "node16"

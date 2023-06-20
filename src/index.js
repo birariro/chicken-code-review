@@ -12,6 +12,7 @@ async function run() {
     const token = core.getInput("github-token");
     const gptKey = core.getInput("gpt-key");
     const trigger = core.getInput("trigger");
+    const language = core.getInput("language");
 
     if((token == undefined || token == "") || (gptKey == undefined || gptKey == "")){
       core.setFailed("token undefined");
@@ -42,7 +43,7 @@ async function run() {
       fileDiff += `${diff.data}\n\n`
     }
 
-    let review = await getReview(gptKey,fileDiff);
+    let review = await getReview(gptKey,fileDiff,language);
 
     if(trigger == "PUSH"){
       await push(client, owner, repo, sha, review)

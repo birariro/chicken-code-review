@@ -1,11 +1,11 @@
 const { Configuration, OpenAIApi } = require("openai");
 const core = require("@actions/core");
 const { prompt } = require("./prompt")
-async function getReview(key, code){
+async function getReview(key, code, language){
 
     try{
 
-        let _prompt = prompt() + code;
+        let _prompt = prompt(language) + code;
         core.info(`_prompt: ${_prompt}`);
 
         const conf = new Configuration({
