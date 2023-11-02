@@ -23,25 +23,28 @@ async function run() {
     const { GITHUB_REPOSITORY, GITHUB_SHA } = process.env;
     const [owner, repo] = GITHUB_REPOSITORY.split("/");
     const sha = GITHUB_SHA;
-    core.info(`GITHUB_REPOSITORY ${GITHUB_REPOSITORY}, GITHUB_SHA ${GITHUB_SHA}`);
-    core.info(`repo ${repo}, owner ${owner}, sha ${sha}`);
+    ;
 
     const compare = await client.request(`GET /repos/${owner}/${repo}/compare/${sha}^...${sha}`);
     const changes = compare.data.files.map((file) => file.filename);
-    core.info(`changes ${changes}`);
+
+    core.info(`\n\n`);
+    core.info(`===================================`);
+    core.info(`GITHUB_REPOSITORY ${GITHUB_REPOSITORY}, GITHUB_SHA ${GITHUB_SHA}`);
+    core.info(`repo ${repo}, owner ${owner}, sha ${sha}`)
+    core.info(`change file names: ${changes}`);
+    core.info(`===================================`);
+    core.info(`\n\n`);
 
 
     // 변경된 파일과 내용 가져오기
-    let fileDiff = ""
-    for (const file of changes) {
-      const diff = await client.request(`GET /repos/${owner}/${repo}/commits/${sha}`, {
-        headers: {
-          Accept: "application/vnd.github.diff",
-        },
-      });
+    const diff = await client.request(`GET /repos/${owner}/${repo}/commits/${sha}`, {
+      headers: {
+        Accept: "application/vnd.github.diff",
+      },
+    });
 
-      fileDiff += `${diff.data}\n\n`
-    }
+    let fileDiff = `\n\n${diff.data}\n\n`
 
     let review = await getReview(gptKey,fileDiff,language);
 

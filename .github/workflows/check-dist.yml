@@ -1,7 +1,10 @@
-# 해당 레파지토리로 이동
-# 빌드 환경 구성(node16, package 디펜던시)
-# 빌드후 결과물 dist 와 레파지토리 의 dist 를 비교
-# 같지 않다면 최신 빌드 파일이 업로드 된것이 아니기에 실패 시키고 github action 의 artifacts 에 업로드
+
+# 액션
+# - 해당 레파지토리로 이동
+# - 빌드 환경 구성(node16, package 디펜던시)
+# - 빌드후 결과물로 나온 dist 와 저장소에 존재하는 dist 를 비교.
+# - 같지 않다면 최신 빌드 파일이 업로드 된것이 아니기에 실패 시키고 github action 의 artifacts 에 업로드
+# - 코드를 수정하였을 경우 ncc 를 통해 빌드하여 dist 파일을 업로드 시켜야한다
 name: Check dist/
 
 on:

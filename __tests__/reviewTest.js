@@ -1,11 +1,10 @@
 const { getReview } = require("../src/review/review");
 
-const key = ""
-
-const code = ""
+const openai_key = "sk-xxx"
+const review_code = "for(int i = 0 ; i < 10; i++) i++;"
 
 test('', () => {
-    expect(getReview(key, code))
+    expect(getReview(openai_key, review_code))
 });
 
 
